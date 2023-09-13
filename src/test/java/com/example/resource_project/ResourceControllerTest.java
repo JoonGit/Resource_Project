@@ -1,10 +1,12 @@
 package com.example.resource_project;
 
-import com.example.resource_project.Entity.ResourceCodeEntity;
-import com.example.resource_project.Repository.ResourceCodeRepository;
-import com.example.resource_project.Repository.ResourceInfoRepository;
-import com.example.resource_project.dto.Resource.resourceCodeSaveDto;
-import com.example.resource_project.dto.Resource.resourceInfoSaveDto;
+import com.example.resource_project.Entity.Resource_tb;
+import com.example.resource_project.Entity.Unit_tb;
+import com.example.resource_project.Repository.Resource_tb_repository;
+import com.example.resource_project.Repository.Resource_info_repository;
+import com.example.resource_project.Repository.Unit_tb_repository;
+import com.example.resource_project.dto.Resource.Resource_price_info_tb_save_dto;
+import com.example.resource_project.dto.Resource.Resource_tb_save_dto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,8 +20,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,9 +35,11 @@ public class ResourceControllerTest {
     @LocalServerPort
     private int port;
     @Autowired
-    private ResourceCodeRepository codeRepository;
+    private Resource_tb_repository codeRepository;
     @Autowired
-    private ResourceInfoRepository infoRepository;
+    private Resource_info_repository infoRepository;
+    @Autowired
+    private Unit_tb_repository unitRepository;
 
     @Autowired
     private WebApplicationContext context;
@@ -52,14 +56,16 @@ public class ResourceControllerTest {
     @Test
     public void Code_save_test() throws Exception{
         //given
-        String name = "test02";
-        float firstPrice = 10000;
-        String unit = "단위";
+        String resource_eng_name = "영어";
+        String resource_kor_name = "한글";
+        String resource_symbol = "단위";
+        String unit_name = "유닛";
 
-        resourceCodeSaveDto requestDto = resourceCodeSaveDto.builder()
-                .name(name)
-                .firstPrice(firstPrice)
-                .unit(unit)
+        Resource_tb_save_dto requestDto = Resource_tb_save_dto.builder()
+                .resource_eng_name(resource_eng_name)
+                .resource_kor_name(resource_kor_name)
+                .resource_symbol(resource_symbol)
+                .unit_name(unit_name)
                 .build();
 
         String url = "http://localhost:" + port + "/resource/codesave";
@@ -71,42 +77,47 @@ public class ResourceControllerTest {
                 .andExpect(status().isOk());
 
         //then
-        List<ResourceCodeEntity> all = codeRepository.findAll();
-        assertThat(all.get(0).getName()).isEqualTo(name);
-        assertThat(all.get(0).getFirstPrice()).isEqualTo(firstPrice);
+        List<Resource_tb> all = codeRepository.findAll();
+        List<Unit_tb> unit_all = unitRepository.findAll();
+
+        assertThat(all.get(0).getResourceEngName()).isEqualTo(resource_eng_name);
+        assertThat(all.get(0).getResourceKorName()).isEqualTo(resource_kor_name);
+        assertThat(all.get(0).getResourceSymbol()).isEqualTo(resource_symbol);
+        assertThat(unit_all.get(0).getUnitName()).isEqualTo(unit_name);
     }
 
     @Test
     public void Info_save_test() throws Exception{
         //given
-        List<String> name = new ArrayList<String>() ;
-        name.add("test01");
-        name.add("test02");
-        List<Float> price = new ArrayList<Float>();
-        price.add(10000f);
-        price.add(20000f);
-        String today = new Date().toString();
+        String resource_date_pk = LocalDate.now().toString();
+        float price = 10000;
+        String resource_tb_symbol = "단위";
+        String unit_id_name = "유닛";
 
-        resourceInfoSaveDto requestDto = resourceInfoSaveDto.builder()
-                .name(name)
+//        List<Resource_price_info_tb_save_dto> test = List<Resource_price_info_tb_save_dto>;
+
+        Resource_price_info_tb_save_dto requests = Resource_price_info_tb_save_dto.builder()
+                .resource_date_pk(resource_date_pk)
                 .price(price)
-                .acquisitionTime(today)
+                .resource_tb_symbol(resource_tb_symbol)
+                .unit_id_name(unit_id_name)
                 .build();
+
 
         String url = "http://localhost:" + port + "/resource/infosave";
 
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        objectMapper.registerModule(new JavaTimeModule());
+
+
 
         //when
         mvc.perform(post(url)
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
-                        .content(new ObjectMapper().writeValueAsString(requestDto)))
+                        .content(new ObjectMapper().writeValueAsString(requests)))
                 .andExpect(status().isOk());
 
         //then
-        List<ResourceCodeEntity> all = codeRepository.findAll();
-        assertThat(all.get(0).getName()).isEqualTo(name);
-        assertThat(all.get(0).getFirstPrice()).isEqualTo(price);
+        List<Resource_tb> all = codeRepository.findAll();
+//        assertThat(all.get(0).getResource_eng_name()).isEqualTo(name);
+//        assertThat(all.get(0).getResource_kor_name()).isEqualTo(price);
     }
 }

@@ -1,4 +1,4 @@
-### Gradle template
+
 .gradle
-.yml
+application.yml
 .idea
