@@ -11,10 +11,10 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Resource_tb {
+public class ResourceTb {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int resource_id_pk;
+    private int resourceIdPk;
 
     @NotNull
     @Column(columnDefinition = "varchar (40)")
@@ -29,7 +29,7 @@ public class Resource_tb {
     private String resourceSymbol;
 
     @Builder
-    public Resource_tb(String resourceKorName, String resourceEngName, String resourceSymbol) {
+    public ResourceTb(String resourceKorName, String resourceEngName, String resourceSymbol) {
         this.resourceKorName = resourceKorName;
         this.resourceEngName = resourceEngName;
         this.resourceSymbol = resourceSymbol;

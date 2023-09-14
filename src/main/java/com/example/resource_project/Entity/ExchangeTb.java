@@ -10,30 +10,30 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Exchange_tb {
+public class ExchangeTb {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int currenty_id_pk;
+    int currentyIdPk;
 
     @NotNull
     @Column(columnDefinition = "varchar (40)")
-    String currency_name;
+    String currencyName;
 
     @NotNull
     @Column(columnDefinition = "varchar (10)")
-    String currency_symbol;
+    String currencySymbol;
 
     @NotNull
     @Column(columnDefinition = "varchar (40)")
     String country;
 
     @Builder
-    public Exchange_tb(String currency_name,
-                       String currency_symbol,
-                       String country
+    public ExchangeTb(String currencyName,
+                      String currencySymbol,
+                      String country
                        ) {
-        this.currency_name = currency_name;
-        this.currency_symbol = currency_symbol;
+        this.currencyName = currencyName;
+        this.currencySymbol = currencySymbol;
         this.country = country;
     }
 }

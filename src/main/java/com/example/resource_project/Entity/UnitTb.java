@@ -6,12 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @Getter
 @NoArgsConstructor
 @Entity
-public class Unit_tb {
+public class UnitTb {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int unitIdPk;
@@ -21,8 +20,7 @@ public class Unit_tb {
     private String unitName;
 
     @Builder
-    public Unit_tb(int unitIdPk, String unitName) {
-        this.unitIdPk = unitIdPk;
+    public UnitTb(String unitName) {
         this.unitName = unitName;
     }
 }
