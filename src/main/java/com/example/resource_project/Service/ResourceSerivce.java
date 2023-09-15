@@ -9,11 +9,13 @@ import com.example.resource_project.Repository.ResourceInfoRepository;
 import com.example.resource_project.Repository.UnitTbRepository;
 import com.example.resource_project.dto.Resource.ResourceTbSaveDto;
 import com.example.resource_project.dto.Resource.ResourcePriceInfoTbSaveDto;
+import com.example.resource_project.vo.Resource.ResourceAllVo;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -54,14 +56,25 @@ public class ResourceSerivce {
         return 1;
     }
 
-    public List<ResourcePriceInfoTb> ResourceAll()
+    public List<ResourceAllVo> ResourceAll()
     {
         // tb와 info와 unit을 join, 해서 Resource이름을 가져온다
         // resource_price_info_tb에서 resource_tb 조인
         // resource_price_info_tb에서 unit_tb 조인
         // 최초 7개만 반환
         List<ResourcePriceInfoTb> result = infoRepository.getInfoAll();
-        return result;
+        List<ResourceAllVo> voList = result.stream().map(
+                resourcePriceInfoTb -> ResourceAllVo.builder()
+                        .date(resourcePriceInfoTb.getResourceDatePk())
+                        .price(resourcePriceInfoTb.getPrice())
+                        .korName(resourcePriceInfoTb.getResourceIdMk().getResourceKorName())
+                        .engName(resourcePriceInfoTb.getResourceIdMk().getResourceEngName())
+                        .Symbol(resourcePriceInfoTb.getResourceIdMk().getResourceSymbol())
+                        .unit(resourcePriceInfoTb.getUnitIdFk().getUnitName())
+                        .build()
+        ).collect(Collectors.toList());
+
+        return voList;
     }
 
 

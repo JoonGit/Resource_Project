@@ -5,6 +5,7 @@ import com.example.resource_project.Entity.ResourcePriceInfoTb;
 import com.example.resource_project.Service.ResourceSerivce;
 import com.example.resource_project.dto.Resource.ResourceTbSaveDto;
 import com.example.resource_project.dto.Resource.ResourcePriceInfoTbSaveDto;
+import com.example.resource_project.vo.Resource.ResourceAllVo;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +36,7 @@ public class ResourceController {
     @GetMapping("/all")
     public ResponseEntity<Object> All()
     {
-        List<ResourcePriceInfoTb> result = resourceSerivce.ResourceAll();
+        List<ResourceAllVo> result = resourceSerivce.ResourceAll();
         return ResponseEntity.ok().body(
                 result);
     }
