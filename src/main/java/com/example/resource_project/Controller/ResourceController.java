@@ -1,9 +1,11 @@
 package com.example.resource_project.Controller;
 
 
+import com.example.resource_project.Entity.ResourcePriceInfoTb;
 import com.example.resource_project.Service.ResourceSerivce;
 import com.example.resource_project.dto.Resource.ResourceTbSaveDto;
 import com.example.resource_project.dto.Resource.ResourcePriceInfoTbSaveDto;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,9 +33,11 @@ public class ResourceController {
         return resourceSerivce.ResourceInfoSave(requestDto);
     }
     @GetMapping("/all")
-    public String All()
+    public ResponseEntity<Object> All()
     {
-        return resourceSerivce.ResourceAll();
+        List<ResourcePriceInfoTb> result = resourceSerivce.ResourceAll();
+        return ResponseEntity.ok().body(
+                result);
     }
 
 

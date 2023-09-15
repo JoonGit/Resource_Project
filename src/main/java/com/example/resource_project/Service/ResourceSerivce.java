@@ -54,13 +54,14 @@ public class ResourceSerivce {
         return 1;
     }
 
-    public String ResourceAll()
+    public List<ResourcePriceInfoTb> ResourceAll()
     {
         // tb와 info와 unit을 join, 해서 Resource이름을 가져온다
         // resource_price_info_tb에서 resource_tb 조인
         // resource_price_info_tb에서 unit_tb 조인
         // 최초 7개만 반환
-        return null;
+        List<ResourcePriceInfoTb> result = infoRepository.getInfoAll();
+        return result;
     }
 
 
